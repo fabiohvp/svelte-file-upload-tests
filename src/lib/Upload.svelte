@@ -11,11 +11,11 @@
 				const contents = e.target?.result as string;
 
 				const harData = JSON.parse(contents);
-				dispatch('change', { err: false, entries: harData.log.entries });
+				dispatch('change', { error: false, entries: harData.log.entries });
 			};
 			reader.readAsText(file);
 		} else {
-			dispatch('change', { err: true, message: 'Something went wrong. Please try again.' });
+			dispatch('change', { error: true });
 		}
 	}
 </script>

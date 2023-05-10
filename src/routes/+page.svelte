@@ -3,23 +3,20 @@
 	import Upload from '$lib/Upload.svelte';
 	import type { HarEntry } from '$lib/interfaces';
 
-	let errorMessage: string;
-	let entries: HarEntry[] | null;
+	let uploadError: boolean;
+	let entries: HarEntry[] | undefined;
 
-	function onUpload(event: CustomEvent<{ err: boolean; message?: string; entries?: HarEntry[] }>) {
-		if (event.detail.err) {
-			errorMessage = event.detail.message!;
-			return;
-		}
-		entries = event.detail.entries!;
+	function onUpload(event: CustomEvent<{ error: boolean; entries?: HarEntry[] }>) {
+		uploadError = event.detail.error;
+		entries = event.detail.entries;
 	}
 </script>
 
 {#if !entries}
 	<Upload on:change={onUpload} />
-{:else if errorMessage}
-	<p style="color:red;">{errorMessage}</p>
+{:else if uploadError}
+	<p style="color:red;">Something went wrong. Please try again.</p>
 {:else}
-	<button on:click={() => (entries = null)}>Reset</button>
+	<button on:click={() => (entries = undefined)}>Reset</button>
 	<HarDetails {entries} />
 {/if}
